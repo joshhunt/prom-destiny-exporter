@@ -10,6 +10,7 @@ import {
   DestinySeasonPassDefinition,
 } from "bungie-api-ts/destiny2";
 import {
+  promArtifactNextLevelAtXP,
   promArtifactPowerBonus,
   promArtifactXP,
   promSeasonPassRank,
@@ -17,9 +18,7 @@ import {
   promWeaponPvPKillTracker,
 } from "./metrics";
 import { Gauge } from "prom-client";
-import { deflateRawSync } from "zlib";
-
-const BUNGIE_API_KEY = "400814fe6f914295ab4b8317d8e64d57";
+import { get } from "./bungieApi";
 
 const authSettings = {
   client_id: "35204",
@@ -181,16 +180,9 @@ async function getSeasonDefinition(seasonHash: number) {
   let def = SEASON_DEFINITIONS[seasonHash];
   if (!def) {
     console.log("Fetching Season definition", seasonHash);
-    const resp = await axios.get<ServerResponse<DestinySeasonDefinition>>(
-      `https://www.bungie.net/Platform/Destiny2/Manifest/DestinySeasonDefinition/${seasonHash}/`,
-      {
-        headers: {
-          "x-api-key": BUNGIE_API_KEY,
-        },
-      }
+    def = await get<DestinySeasonDefinition>(
+      `/Platform/Destiny2/Manifest/DestinySeasonDefinition/${seasonHash}/`
     );
-
-    def = resp.data.Response;
     SEASON_DEFINITIONS[seasonHash] = def;
   }
 
@@ -201,16 +193,9 @@ async function getSeasonPassDefinition(seasonPassHash: number) {
   let def = SEASON_PASS_DEFINITIONS[seasonPassHash];
   if (!def) {
     console.log("Fetching Season Pass definition", seasonPassHash);
-    const resp = await axios.get<ServerResponse<DestinySeasonPassDefinition>>(
-      `https://www.bungie.net/Platform/Destiny2/Manifest/DestinySeasonPassDefinition/${seasonPassHash}/`,
-      {
-        headers: {
-          "x-api-key": BUNGIE_API_KEY,
-        },
-      }
+    def = await get<DestinySeasonPassDefinition>(
+      `/Platform/Destiny2/Manifest/DestinySeasonPassDefinition/${seasonPassHash}/`
     );
-
-    def = resp.data.Response;
     SEASON_PASS_DEFINITIONS[seasonPassHash] = def;
   }
 
@@ -258,25 +243,22 @@ async function collectProfileLevels(profile: DestinyProfileResponse) {
   const seasonalXp =
     profile.profileProgression.data?.seasonalArtifact.powerBonusProgression
       .currentProgress ?? 0;
+  const nextLevelAtXP =
+    profile.profileProgression.data?.seasonalArtifact.powerBonusProgression
+      .nextLevelAt ?? 0;
 
   promSeasonPassRank.labels({ seasonHash }).set(seasonPassRank);
   promArtifactPowerBonus.labels({ seasonHash }).set(seasonalPowerBonus);
   promArtifactXP.labels({ seasonHash }).set(seasonalXp);
+  promArtifactNextLevelAtXP.labels({ seasonHash }).set(nextLevelAtXP);
 }
 
 export default async function collectMetrics() {
   const accessToken = await getAccessToken();
-  const resp = await axios.get<ServerResponse<DestinyProfileResponse>>(
-    "https://www.bungie.net/Platform/Destiny2/2/Profile/4611686018469271298/?components=100,200,201,309,205,102,202,104",
-    {
-      headers: {
-        "x-api-key": BUNGIE_API_KEY,
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+  const profile = await get<DestinyProfileResponse>(
+    `/Platform/Destiny2/2/Profile/4611686018469271298/?components=100,200,201,309,205,102,202,104`,
+    accessToken
   );
-
-  const profile = resp.data.Response;
 
   collectKillTrackers(profile);
   await collectProfileLevels(profile);
