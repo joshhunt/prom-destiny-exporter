@@ -12,6 +12,7 @@ import {
 import {
   promArtifactNextLevelAtXP,
   promArtifactPowerBonus,
+  promArtifactProgressToNextLevelXP,
   promArtifactXP,
   promSeasonPassRank,
   promWeaponPvEKillTracker,
@@ -246,11 +247,18 @@ async function collectProfileLevels(profile: DestinyProfileResponse) {
   const nextLevelAtXP =
     profile.profileProgression.data?.seasonalArtifact.powerBonusProgression
       .nextLevelAt ?? 0;
+  const progressToNextLevel =
+    profile.profileProgression.data?.seasonalArtifact.powerBonusProgression
+      .progressToNextLevel ?? 0;
 
   promSeasonPassRank.labels({ seasonHash }).set(seasonPassRank);
   promArtifactPowerBonus.labels({ seasonHash }).set(seasonalPowerBonus);
   promArtifactXP.labels({ seasonHash }).set(seasonalXp);
+
   promArtifactNextLevelAtXP.labels({ seasonHash }).set(nextLevelAtXP);
+  promArtifactProgressToNextLevelXP
+    .labels({ seasonHash })
+    .set(progressToNextLevel);
 }
 
 export default async function collectMetrics() {
@@ -263,3 +271,7 @@ export default async function collectMetrics() {
   collectKillTrackers(profile);
   await collectProfileLevels(profile);
 }
+
+18, 725, 940;
+905, 939;
+2, 035, 000;

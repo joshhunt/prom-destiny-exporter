@@ -25,7 +25,13 @@ export const promArtifactXP = new Gauge({
 });
 
 export const promArtifactNextLevelAtXP = new Gauge({
-  name: "artifact_xp_next_level_at_xp",
+  name: "artifact_next_level_at_xp",
+  help: "XP to next seasonal artifact power bonus",
+  labelNames: ["seasonHash"] as const,
+});
+
+export const promArtifactProgressToNextLevelXP = new Gauge({
+  name: "artifact_progress_to_next_level_xp",
   help: "XP to next seasonal artifact power bonus",
   labelNames: ["seasonHash"] as const,
 });
