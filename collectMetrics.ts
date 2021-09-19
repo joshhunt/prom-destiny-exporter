@@ -14,6 +14,7 @@ import {
   promArtifactPowerBonus,
   promArtifactProgressToNextLevelXP,
   promArtifactXP,
+  promMetricProgress,
   promSeasonPassRank,
   promWeaponPvEKillTracker,
   promWeaponPvPKillTracker,
@@ -261,13 +262,24 @@ async function collectProfileLevels(profile: DestinyProfileResponse) {
     .set(progressToNextLevel);
 }
 
+function collectDestinyMetrics(profile: DestinyProfileResponse) {
+  for (const [metricHash, destinyMetric] of Object.entries(
+    profile.metrics?.data?.metrics ?? {}
+  )) {
+    promMetricProgress
+      .labels({ metricHash })
+      .set(destinyMetric.objectiveProgress.progress ?? 0);
+  }
+}
+
 export default async function collectMetrics() {
   const accessToken = await getAccessToken();
   const profile = await get<DestinyProfileResponse>(
-    `/Platform/Destiny2/2/Profile/4611686018469271298/?components=100,200,201,309,205,102,202,104`,
+    `/Platform/Destiny2/2/Profile/4611686018469271298/?components=100,200,201,309,205,102,202,104,1100`,
     accessToken
   );
 
   collectKillTrackers(profile);
   await collectProfileLevels(profile);
+  collectDestinyMetrics(profile);
 }

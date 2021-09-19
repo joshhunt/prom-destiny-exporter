@@ -7,6 +7,7 @@ const metricServer = express();
 metricServer.get("/metrics", async (req, res) => {
   console.log("Metrics scraped");
   await collectMetrics();
+  res.contentType("text/plain");
   res.send(await promClient.register.metrics());
 });
 

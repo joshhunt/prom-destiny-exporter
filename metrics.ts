@@ -41,3 +41,9 @@ export const promSeasonPassRank = new Gauge({
   help: "Season pass rank",
   labelNames: ["seasonHash"] as const,
 });
+
+export const promMetricProgress = new Gauge({
+  name: "metric_progress",
+  help: "Stat tracker metric progress",
+  labelNames: ["metricHash"] as const,
+});
