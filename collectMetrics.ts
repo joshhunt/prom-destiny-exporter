@@ -271,7 +271,3 @@ export default async function collectMetrics() {
   collectKillTrackers(profile);
   await collectProfileLevels(profile);
 }
-
-18, 725, 940;
-905, 939;
-2, 035, 000;
