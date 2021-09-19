@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    // "lib": ["es5", "es6"],
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true /* Enable all strict type-checking options. */,
+    "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
+    "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
