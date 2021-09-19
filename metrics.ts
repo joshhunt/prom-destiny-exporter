@@ -47,3 +47,39 @@ export const promMetricProgress = new Gauge({
   help: "Stat tracker metric progress",
   labelNames: ["metricHash"] as const,
 });
+
+export const promProgressionCurrentProgress = new Gauge({
+  name: "progression_current_progress",
+  help: "Progression current progress",
+  labelNames: ["progressionHash", "characterID"],
+});
+
+export const promProgressionLevel = new Gauge({
+  name: "progression_level",
+  help: "Progression level",
+  labelNames: ["progressionHash", "characterID"],
+});
+
+// export const promProgressionLevelCap = new Gauge({
+//   name: "progression_level_cap",
+//   help: "Progression level cap",
+//   labelNames: ["progressionHash", "characterID"],
+// });
+
+export const promProgressionProgressToNextLevel = new Gauge({
+  name: "progression_progress_to_next_level",
+  help: "Progression progress to next level",
+  labelNames: ["progressionHash", "characterID"],
+});
+
+export const promProgressionNextLevelAt = new Gauge({
+  name: "progression_next_level_at",
+  help: "Progression next level at",
+  labelNames: ["progressionHash", "characterID"],
+});
+
+export const promProgressionCurrentResetCount = new Gauge({
+  name: "progression_current_reset_count",
+  help: "Progression current reset count",
+  labelNames: ["progressionHash", "characterID"],
+});
