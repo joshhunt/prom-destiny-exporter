@@ -48,7 +48,7 @@ async function getAccessToken() {
     : new Date(2100, 1);
 
   const now = new Date();
-  now.setMinutes(now.getMinutes() - 5);
+  now.setMinutes(now.getMinutes() + 1);
 
   if (authTokenExpiration > now) {
     return auth.access_token;
