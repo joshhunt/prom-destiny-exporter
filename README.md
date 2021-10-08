@@ -1,5 +1,7 @@
 # Destiny Promethetheus Exporter
 
+![Screenshot of Grafana showing Destiny stats collected with this exporter](./docs/preview.jpg)
+
 Scrapes the Destiny API and reports metrics to be scraped with Prometheus.
 
 Requires:
