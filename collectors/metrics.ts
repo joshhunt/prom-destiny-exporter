@@ -8,6 +8,6 @@ export default function collectDestinyMetrics(profile: DestinyProfileResponse) {
   )) {
     promMetricProgress
       .labels({ metricHash })
-      .set(destinyMetric.objectiveProgress.progress ?? 0);
+      .set(destinyMetric.objectiveProgress?.progress ?? 0);
   }
 }
