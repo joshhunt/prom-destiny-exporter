@@ -21,6 +21,7 @@ const authSettings = {
 
 export async function getAccessToken() {
   const auth = await fsExtra.readJSON("./auth.json");
+
   const authTokenExpiration = auth.authTokenExpiration
     ? new Date(auth.authTokenExpiration)
     : new Date(2000, 1);
